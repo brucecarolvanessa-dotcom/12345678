@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冬日雪景明信片 - Snowfall Postcards</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Serif TC', serif;
+            background: #090d16;
+        }
+        .title-font {
+            font-family: 'Cinzel', 'Noto Serif TC', serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+        /* Glassmorphism styling */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-100 relative overflow-x-hidden flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-950">
+
+    <!-- Canvas Snow Layer -->
+    <canvas id="snow-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-10"></canvas>
+
+    <!-- Content Wrapper -->
+    <div class="relative z-20 flex flex-col min-h-screen">
+        
+        <!-- Header -->
+        <header class="py-8 px-4 text-center">
+            <div class="inline-block relative">
+                <span class="text-xs uppercase tracking-[0.3em] text-cyan-400 font-semibold mb-2 block">Taoyuan Lake Sunset</span>
+                <h1 class="title-font text-3xl md:text-5xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-slate-100 via-sky-100 to-cyan-300 drop-shadow-lg">
+                    冬日雪景明信片
+                </h1>
+                <div class="h-0.5 w-24 bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto mt-3"></div>
+            </div>
+            <p class="mt-3 text-slate-400 text-sm md:text-base max-w-md mx-auto font-light">
+                靜謐湖畔與夕陽餘暉下，飄落點點寒雪
+            </p>
+        </header>
+
+        <!-- Main Gallery Container -->
+        <main class="container mx-auto px-4 py-6 flex-grow flex flex-col justify-center items-center">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 max-w-6xl w-full items-center">
+                
+                <!-- Card 1 (Original Postcard) -->
+                <div class="group relative rounded-2xl p-3 glass-card shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-cyan-950/40 hover:border-cyan-500/30">
+                    <div class="relative overflow-hidden rounded-xl bg-slate-900 aspect-[4/3]">
+                        <img 
+                            src="postcard.jpg" 
+                            onerror="this.onerror=null; this.src='https://placehold.co/800x600/1e293b/e2e8f0?text=postcard.jpg+Not+Found';"
+                            alt="Welcome to Taoyuan Postcard" 
+                            class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        >
+                        <!-- Light Reflection Overlay on Hover -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-3 left-4 right-4 flex justify-between items-end">
+                            <div>
+                                <span class="text-xs font-mono text-cyan-300 bg-slate-950/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-cyan-500/20">postcard.jpg</span>
+                                <p class="text-xs text-slate-300 mt-1">經典風景明信片</p>
+                            </div>
+                            <button onclick="openModal('postcard.jpg')" class="p-2.5 rounded-full bg-slate-900/80 hover:bg-cyan-600 text-slate-200 hover:text-white transition-all transform group-hover:scale-110 shadow-lg border border-slate-700" title="放大檢視">
+                                <i class="fa-solid fa-expand text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 (Postcard with QR Code) -->
+                <div class="group relative rounded-2xl p-3 glass-card shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-cyan-950/40 hover:border-cyan-500/30">
+                    <div class="relative overflow-hidden rounded-xl bg-slate-900 aspect-[4/3]">
+                        <img 
+                            src="postcard (1).jpg" 
+                            onerror="this.onerror=null; this.src='https://placehold.co/800x600/1e293b/e2e8f0?text=postcard+(1).jpg+Not+Found';"
+                            alt="Welcome to Taoyuan Postcard with QR" 
+                            class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-3 left-4 right-4 flex justify-between items-end">
+                            <div>
+                                <span class="text-xs font-mono text-cyan-300 bg-slate-950/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-cyan-500/20">postcard (1).jpg</span>
+                                <p class="text-xs text-slate-300 mt-1">附帶 QR Code 互動版</p>
+                            </div>
+                            <button onclick="openModal('postcard (1).jpg')" class="p-2.5 rounded-full bg-slate-900/80 hover:bg-cyan-600 text-slate-200 hover:text-white transition-all transform group-hover:scale-110 shadow-lg border border-slate-700" title="放大檢視">
+                                <i class="fa-solid fa-expand text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+
+        <!-- Floating Controls Panel -->
+        <div class="fixed bottom-6 right-6 z-30">
+            <div id="controls-menu" class="hidden glass-panel p-4 rounded-2xl mb-3 shadow-2xl w-64 text-xs space-y-3 border border-slate-700">
+                <div class="flex justify-between items-center border-b border-slate-700/80 pb-2">
+                    <span class="font-semibold text-slate-200"><i class="fa-solid fa-snowflake text-cyan-400 mr-1.5"></i> 下雪特效設定</span>
+                    <button onclick="toggleControls()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div>
+                    <div class="flex justify-between mb-1 text-slate-300">
+                        <label>雪花數量</label>
+                        <span id="count-val">150</span>
+                    </div>
+                    <input type="range" id="flake-count" min="30" max="400" value="150" class="w-full accent-cyan-400 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                </div>
+                <div>
+                    <div class="flex justify-between mb-1 text-slate-300">
+                        <label>飄落速度</label>
+                        <span id="speed-val">中等</span>
+                    </div>
+                    <input type="range" id="flake-speed" min="1" max="5" value="2" step="0.5" class="w-full accent-cyan-400 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                </div>
+                <div>
+                    <div class="flex justify-between mb-1 text-slate-300">
+                        <label>風向飄移</label>
+                        <span id="wind-val">輕微</span>
+                    </div>
+                    <input type="range" id="flake-wind" min="-2" max="2" value="0.5" step="0.5" class="w-full accent-cyan-400 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                </div>
+            </div>
+
+            <button onclick="toggleControls()" class="glass-panel p-3.5 rounded-full text-slate-200 hover:text-cyan-300 shadow-xl border border-slate-700 hover:border-cyan-500/50 transition-all duration-300 flex items-center gap-2 group">
+                <i class="fa-solid fa-sliders text-base group-hover:rotate-90 transition-transform duration-300"></i>
+                <span class="text-xs pr-1 font-medium hidden md:inline">控制選單</span>
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="py-6 text-center text-slate-500 text-xs border-t border-slate-900/80">
+            <p>© 2026 Taoyuan Postcard Collection • Designed with Atmosphere</p>
+        </footer>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center">
+            <button onclick="closeModal()" class="absolute -top-12 right-0 text-slate-400 hover:text-white text-2xl transition-colors p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img id="modal-img" src="" alt="Enlarged Postcard" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-slate-700">
+        </div>
+    </div>
+
+    <script>
+        // Canvas Snow Effect Engine
+        const canvas = document.getElementById('snow-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        // Settings
+        let maxFlakes = 150;
+        let speedMultiplier = 2;
+        let windFactor = 0.5;
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        class Flake {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * -height;
+                this.size = Math.random() * 3 + 1; // Radius
+                this.speed = (Math.random() * 1.5 + 0.5) * speedMultiplier;
+                this.opacity = Math.random() * 0.7 + 0.3;
+                this.swing = Math.random() * 2;
+                this.swingSpeed = Math.random() * 0.02 + 0.005;
+            }
+
+            update() {
+                this.swing += this.swingSpeed;
+                this.x += Math.sin(this.swing) * 0.5 + windFactor;
+                this.y += this.speed;
+
+                // Reset flake if out of bounds
+                if (this.y > height) {
+                    this.reset();
+                    this.y = 0;
+                }
+                if (this.x > width) {
+                    this.x = 0;
+                } else if (this.x < 0) {
+                    this.x = width;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.shadowBlur = this.size > 2 ? 5 : 0;
+                ctx.shadowColor = 'white';
+                ctx.fill();
+                ctx.shadowBlur = 0; // Reset blur for performance
+            }
+        }
+
+        let flakes = Array.from({ length: maxFlakes }, () => new Flake());
+
+        function animateSnow() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < flakes.length; i++) {
+                flakes[i].update();
+                flakes[i].draw();
+            }
+            requestAnimationFrame(animateSnow);
+        }
+
+        // Interactive Controls Logic
+        const countInput = document.getElementById('flake-count');
+        const speedInput = document.getElementById('flake-speed');
+        const windInput = document.getElementById('flake-wind');
+
+        countInput.addEventListener('input', (e) => {
+            const targetCount = parseInt(e.target.value);
+            document.getElementById('count-val').innerText = targetCount;
+            if (targetCount > flakes.length) {
+                const diff = targetCount - flakes.length;
+                for (let i = 0; i < diff; i++) flakes.push(new Flake());
+            } else {
+                flakes.length = targetCount;
+            }
+        });
+
+        speedInput.addEventListener('input', (e) => {
+            speedMultiplier = parseFloat(e.target.value);
+            document.getElementById('speed-val').innerText = speedMultiplier <= 1.5 ? '輕柔' : speedMultiplier <= 3 ? '中等' : '強烈';
+            flakes.forEach(f => f.speed = (Math.random() * 1.5 + 0.5) * speedMultiplier);
+        });
+
+        windInput.addEventListener('input', (e) => {
+            windFactor = parseFloat(e.target.value);
+            document.getElementById('wind-val').innerText = windFactor === 0 ? '無風' : windFactor > 0 ? '微右' : '微左';
+        });
+
+        function toggleControls() {
+            const menu = document.getElementById('controls-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Modal Lightbox Logic
+        function openModal(imgSrc) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            modalImg.src = imgSrc;
+            modal.classList.remove('hidden', 'pointer-events-none');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden', 'pointer-events-none');
+            }, 300);
+        }
+
+        // Close modal on escape key or clicking overlay
+        document.getElementById('image-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'image-modal') closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Mouse Parallax Effect on Snow Canvas
+        window.addEventListener('mousemove', (e) => {
+            const mouseX = (e.clientX / width) - 0.5;
+            windFactor = mouseX * 1.5;
+        });
+
+        // Initialize Animation on load
+        window.onload = function() {
+            animateSnow();
+        };
+    </script>
+</body>
+</html>
